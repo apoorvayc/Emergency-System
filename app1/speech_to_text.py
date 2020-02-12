@@ -1,0 +1,11 @@
+from google.cloud import translate_v2 as translate
+translate_client = translate.Client()
+
+# Text can also be a sequence of strings, in which case this method
+# will return a sequence of results for each text.
+text = "hello evryone"
+result = translate_client.detect_language(text)
+
+print('Text: {}'.format(text))
+print('Confidence: {}'.format(result['confidence']))
+print('Language: {}'.format(result['language']))

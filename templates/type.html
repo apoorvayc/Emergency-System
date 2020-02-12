@@ -1,0 +1,367 @@
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <script>
+            var image =  document.getElementById("imageOne");
+
+            function changeColor()
+            {
+                if (image.getAttribute('src') === "audio.png")
+                {
+                    console.log("yes")
+                    image.src = "../static/images/bg-01.jpg"
+                }
+                else
+                {
+                    console.log("no")
+                    image.src = "circleRed.png";
+                }
+            }
+        </script>
+<div class="container">
+    <div class="row" style="padding-top: 20%" >
+        <div class="col-md-4">
+            <a href="{% url 'audio' %}"><img src="../static/images/audio.png" style="width: 30%" id = "imageOne"  onclick="changeColor() "/> </a>
+        </div>
+        <div class="col-md-4" >
+            <form method="post" enctype="multipart/form-data" style="margin: 0 auto" action="{% url 'text1' %}">
+                {%  csrf_token %}
+
+                <textarea type="text" name = "textinput1" style="height: 10%"></textarea><br>
+            <button type="submit" value="Proceed" style="height: 20px; width: 180px" >PROCEED</button>
+            </form>
+        </div>
+        <div class="col-md-4" style="border: 3px solid black">
+
+  <style>
+  body{
+    color: #435757;
+  background: radial-gradient(#fff, #dac4cd);
+  font: 1.4em/1 'Noto Sans', sans-serif;
+  }
+
+.btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
+.btn:hover {opacity: 1; background-color: #46a049;  }
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default radio button */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Create a custom radio button */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  /* When the radio button is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #2196F3;
+  }
+
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the indicator (dot/circle) when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the indicator (dot/circle) */
+  .container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+  }
+  #f1{
+    display:none;
+  }
+  #f2{
+    display:none;
+  }
+  #f3{
+    display:none;
+  }
+  #f4{
+    display:none;
+  }
+  #f5{
+    display:none;
+  }
+  #f6{
+    display:none;
+  }
+  #f7{
+    display:none;
+  }
+  #c1{
+    display:none;
+  }
+  #c2{
+    display:none;
+  }
+  #c3{
+    display:none;
+  }
+  #c4{
+    display:none;
+  }
+  #c5{
+    display:none;
+  }
+  #c6{
+    display:none;
+  }
+  #c7{
+    display:none;
+  }
+  #c8{
+    display:none;
+  }
+  #b1{
+    display:none;
+  }
+  #b2{
+    display:none;
+  }
+  #b3{
+    display:none;
+  }
+  #b4{
+    display:none;
+  }
+  #b5{
+    display: none;
+  }
+  </style>
+  <body>
+    <form method="POST" action="{% url 'text2' %}">
+      {% csrf_token %}
+
+      <h1 id = "s">Select One</h1>
+
+      <div id="ff">
+        <label class="container">Accidents
+          <input type="radio" onclick="myFunction()" id   = 'fireaccident' name="radio" value="Accidents">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id = "f1">
+        <h1 >If Accidents</h1>
+      </div>
+      <div id = "f2" >
+        <label class="container">Fire Accident
+          <input type="radio" name="radio" id="ff1" onclick="myFunctionf1()" name="radio" value = "Fire Accident">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id="f3">
+        <label class="container">Car Accident
+          <input type="radio" name="radio" id = "ff2" onclick="myFunctionf2()" value = "Car Accident">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id="cc">
+        <label class="container">Health Problems
+          <input type="radio" onclick="myFunction2()" id = "caraccident" name="radio" value="Health Problems">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id = "c1">
+        <h1>If Health Problems</h1>
+      </div>
+      <div id="c2">
+        <label class="container">Asthama
+          <input type="radio" id="cc1" name="radio" onclick="myFunctionc1()" value="Asthama">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id="c3">
+        <label class="container">Heart Attack
+          <input type="radio" id="cc2" name="radio" onclick="myFunctionc2()" value="Heart Attack">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id="bb">
+        <label class="container">Animal Attacks
+          <input type="radio" onclick="myFunction3()" id = "breathlessness" name="radio" value="Animal Attacks">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <h1 id = "b1">If Animal Attacks</h1>
+      <div id="b2">
+        <label class="container">Dog Bite
+          <input type="radio"  name="radio" id="bb1" onclick="myFunctionb1()" value="Dog Bite">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div id="b3">
+        <label class="container">Snake bite
+          <input type="radio" name="radio" id="bb2" onclick="myFunctionb2()" value="Snake Bite">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <button class="btn" type="submit">Proceed</button>
+    </form>
+  </body>
+  <script>
+  function myFunction() {
+    var x  = document.getElementById('fireaccident')
+    var y  = document.getElementById('breathlessness')
+    var z  = document.getElementById('caraccident')
+    x.name  = "radiobutton"
+    y.name = 'radio'
+    z.name = 'radio'
+
+    document.getElementById('f1').style.display = 'block';
+    document.getElementById('f2').style.display = "block";
+    document.getElementById('f3').style.display = 'block';
+
+    document.getElementById('s').style.display = 'none';
+    document.getElementById('ff').style.display = 'none';
+    document.getElementById('cc').style.display = 'none';
+    document.getElementById('bb').style.display = 'none';
+  }
+  function myFunction2() {
+
+    var x  = document.getElementById('caraccident')
+    var y  = document.getElementById('fireaccident')
+    var z  = document.getElementById('breathlessness')
+
+    x.name  = "radiobutton"
+    y.name = 'radio'
+    z.name = 'radio'
+
+
+    document.getElementById('c1').style.display = 'block';
+    document.getElementById('c2').style.display = "block";
+    document.getElementById('c3').style.display = "block";
+
+
+    document.getElementById('s').style.display = 'none';
+    document.getElementById('ff').style.display = 'none';
+    document.getElementById('cc').style.display = 'none';
+    document.getElementById('bb').style.display = 'none';
+  }
+  function myFunction3() {
+    var x  = document.getElementById('breathlessness')
+    var y  = document.getElementById('fireaccident')
+    var z  = document.getElementById('caraccident')
+    x.name  = "radiobutton"
+    y.name = 'radio'
+    z.name  ='radio'
+
+    document.getElementById('b1').style.display = 'block';
+    document.getElementById('b2').style.display = "block";
+    document.getElementById('b3').style.display = "block";
+
+
+    document.getElementById('s').style.display = 'none';
+    document.getElementById('ff').style.display = 'none';
+    document.getElementById('cc').style.display = 'none';
+    document.getElementById('bb').style.display = 'none';
+  }
+  function myFunctionf1(){
+    var a  = document.getElementById('ff1')
+    var b  = document.getElementById('ff2')
+
+    a.name  = "radiobutton2"
+    b.name = 'radio'
+  }
+  function myFunctionf2(){
+    var a  = document.getElementById('ff1')
+    var b  = document.getElementById('ff2')
+    a.name  = 'radio'
+    b.name = 'radiobutton2'
+  }
+
+  function myFunctionc1(){
+    var a  = document.getElementById('cc1')
+    var b  = document.getElementById('cc2')
+
+    a.name  = "radiobutton2"
+    b.name = 'radio'
+  }
+  function myFunctionc2(){
+    var a  = document.getElementById('cc1')
+    var b  = document.getElementById('cc2')
+
+    a.name  = 'radio'
+    b.name = 'radiobutton2'
+
+  }
+  function myFunctionb1(){
+    var a  = document.getElementById('bb1')
+    var b  = document.getElementById('bb2')
+
+    a.name  = "radiobutton2"
+    b.name = 'radio'
+  }
+  function myFunctionb2(){
+    var a  = document.getElementById('bb1')
+    var b  = document.getElementById('bb2')
+
+    a.name  = 'radio'
+    b.name = 'radiobutton2'
+    }
+</script>
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

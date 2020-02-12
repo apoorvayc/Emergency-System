@@ -1,0 +1,60 @@
+{"intents": [
+        {"tag": "fire_maj",
+         "patterns": ["fire", "person", "huge"],
+         "responses": ["Protect the burned person from further harm. If you can do so safely, make sure the person you're helping is not in contact with the source of the burn. For electrical burns, make sure the power source is off before you approach the burned person.Make certain that the person burned is breathing. If needed, begin rescue breathing if you know how.Remove jewelry, belts and other restrictive items, especially from around burned areas and the neck. Burned areas swell rapidly.Cover the area of the burn. Use a cool, moist bandage or a clean cloth.Don't immerse large severe burns in water. Doing so could cause a serious loss of body heat (hypothermia).Elevate the burned area. Raise the wound above heart level, if possible.Watch for signs of shock. Signs and symptoms include fainting, pale complexion or breathing in a notably s hallow fashion."],
+         "context_set": ""
+        },
+{"tag": "fire + minor",
+         "patterns": ["fire", "person", "small", "burn"],
+         "responses": ["Cool the burn.Remove rings or other tight items from the burned area. Don't break blisters. If a blister breaks, clean the area with water Apply an antibiotic ointment. But if a rash appears, stop using the ointment.Apply lotion. Once a burn is completely cooled, apply a lotion, such as one that contains aloe vera or a moisturizer. This helps prevent drying and provides relief. Bandage the burn (not fluffy cotton). Wrap it loosely to avoid putting pressure on burned skin. If needed, take an over-the-counter pain reliever, such as ibuprofen (Advil, Motrin IB, others), naproxen sodium (Aleve) or acetaminophen (Tylenol, others)."],
+         "context_set": ""
+        },
+        {"tag": "accident + major",
+         "patterns": ["vehicle", "accident", "road", "family", "bridge", "hit", "fell", "drive"],
+         "responses": ["If the casualty appears unresponsive, ask them loudly if they are OK and if they can open their eyes. If they respond, you can leave them in the position they're in until help arrives.If there's no response gently lay them on their back and open their airway.To open the airway, place one hand on the casualty’s forehead and gently tilt their head back, lifting the tip of the chin using two fingers.If you think the person may have a spinal injury, place your hands on either side of their head and use your fingertips to gently lift the angle of the jaw forward and upwards, without moving the head, to open the airway. Take care not to move the casualty’s neck.If they're breathing normally, place them in the recovery position so their airway remains clear of obstructions and continue to monitor normal breathing."],
+         "context_set": ""
+        },
+
+        {"tag": "collapse",
+         "patterns": ["dizzi", "dizzy"],
+         "responses": ["Stay calm and remain with the person. If they have food or fluid in their mouth, roll them onto their side immediately. Keep them safe and protect them from injury. Place something soft under their head and loosen any tight clothing. Reassure the person until they recover. Time the seizure, if you can. Gently roll the person onto their side after the jerking stops. Do not put anything into their mouth or restrain or move the person, unless they are in danger."],
+         "context_set": ""
+        },
+
+        {"tag": "asthama",
+         "patterns": ["trouble breathing", "breathlesness"],
+         "responses": ["make sure they’re in a safe, comfortable position. Preferably, this should be lying on one side with their head slightly raised and supported in case they vomit. Check to see if they’re breathing. If they’re not breathing, perform CPR loosen any constrictive clothing, such as a tie or scarf. Cover them with a blanket to keep them warm. Don’t give them anything to eat or drink. Dont move them if they feel weakness in limbs. . Be prepared to tell the emergency operator about their symptoms and when they started. Be sure to mention if the person fell or hit their head."],
+         "context_set": ""
+        },
+{"tag": "bleeding + major",
+"patterns": ["cut", "bleed", "accident", "accid"],
+"responses": ["If you have disposable gloves, use them to reduce the risk of any infection being passed on.If nothing is embedded:apply and maintain pressure to the wound with your gloved hand, using a clean pad or dressing if possible; continue to apply pressure until the bleeding stops if bleeding continues through the pad, apply pressure to the wound  until the bleeding stops and then apply another pad over the top and bandage it in place; don't remove the original pad or dressing, but continue to check that the bleeding has stopped If a body part, such as a finger, has been severed, place it in a plastic bag or wrap it in cling film and make sure it goes with the casualty to hospital.To stop a nosebleed:Check that there's nothing embedded in the wound. If there is, take care not to press down on the object. sit down and firmly pinch the soft part of your nose, just above your nostrils, for at least 10-15 minutes lean forward and breathe through your mouth – this will drain blood into your nose instead of down the back of your throat place an ice pack or bag of frozen vegetables covered by a towel on the bridge of your nose stay upright, rather than lying down as this reduces the blood pressure in the blood vessels of your nose and will discourage further bleeding"],
+"context_set": ""
+},
+{"tag": "heart-attack",
+"patterns": ["heart attack", "chest", "sweat", "sweating", "shoulder"],
+"responses": ["Chew and swallow an aspirin, unless you are allergic to aspirin Take nitroglycerin, if prescribed  Don't take anyone else's nitroglycerin Begin CPR if the person is unconscious If you haven't received CPR training, doctors recommend performing only chest compressions (about 100 to 120 compressions a minute). "],
+"context_set": ""
+},
+{"tag": "shock",
+"patterns": ["light pole", "current", "open wires", "electricity", "electric"],
+"responses": ["Don't touch the injured person if he or she is still in contact with the electrical current. Don't get near high-voltage wires until the power is turned off. Overhead power lines usually aren't insulated. Stay at least 20 feet (about 6 meters) away — farther if wires are jumping and sparking. Don't move a person with an electrical injury unless he or she is in immediate danger. Turn off the source of electricity, if possible. If not, move the source away from you and the person, using a dry, nonconducting object made of cardboard, plastic or wood. Begin CPR if the person shows no signs of circulation, such as breathing, coughing or movement. Try to prevent the injured person from becoming chilled. Apply a bandage. Cover any burned areas with a sterile gauze bandage, if available, or a clean cloth. Don't use a blanket or towel, because loose fibers can stick to the burns."],
+"context_set": ""
+},
+{"tag": "snake bite",
+"patterns": ["snake bit", "leg", "snake bitten", "snake"],
+"responses": ["Remove jewelry and tight clothing before you start to swell.Position yourself, if possible, so that the bite is at or below the level of your heart.Clean the wound with soap and water. Cover it with a clean, dry dressing. Don't use a tourniquet or apply ice.Don't cut the wound or attempt to remove the venom.Don't drink caffeine or alcohol, which could speed your body's absorption of venom.Don't try to capture the snake. Try to remember its color and shape so that you can describe it, which will help in your treatment"],
+"context_set": ""
+},
+{"tag": "dog bite",
+"patterns": ["dog", "bitten", "animal"],
+"responses": ["If your skin was broken, wash the area with warm soap and water and gently press on the wound to promote a small amount of bleeding. This will help flush out germs. If the bite is already bleeding, apply a clean cloth to the wound and gently press down to stop the flow. If the dog’s owner is nearby, ask for the dog’s vaccination history"],
+"context_set": ""
+},
+{"tag": "drown",
+"patterns" :["drown", "drowning", "water"],
+"responses" : ["Get Help. Notify a lifeguard, if one is close.Move the Person. Take the person out of the water.Check for Breathing. Place your ear next to the person's mouth and nose. If the Person is Not Breathing, Check Pulse.If There is No Pulse, Start CPR. Repeat if Person Is Still Not Breathing."],
+"context_set" : ""
+}
+   ]
+}

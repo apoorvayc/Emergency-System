@@ -1,0 +1,79 @@
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
+
+<!DOCTYPE html>
+<html>
+<!--input type="file" accept="audio/*" capture-->
+{#<input type="file" accept="audio/*" capture id="recorder">#}
+{#<audio id="player" controls></audio>#}
+<style>
+    p{
+        height: 70%;width: 100%;
+        background-color: white;
+        color: black;
+    }
+
+
+</style>
+<script>
+
+</script>
+<div class="container">
+    <div class="row">
+         <input type="hidden" id = "demo"></input>
+        <form  method="POST"  action="/latlongi">
+    {% csrf_token %}
+    <input type="hidden" name= 'latitude' id="latitude" >
+    <input type="hidden" name="longitude" id  ='longitude'>
+
+        <div class="col-md-6">
+            <p  style=" "> {{ text }}</p>
+
+               <button type="button" onclick="getLocation()" id="final">Share my location</button>
+
+
+        </div>
+        <div class="col-md-6">
+            <p  style=""> {{ textlang }}</p>
+
+               <button type="submit"  > Get Nearest Hospitals</button>
+
+        </div>
+             </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+            var x = document.getElementById("demo");
+            var y  =document.getElementById("latitude");
+            var z  = document.getElementById("longitude");
+            var w = document.getElementById("final");
+            function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+              } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+            }
+
+            function showPosition(position) {
+              x.innerHTML = "Latitude: " + position.coords.latitude +
+              "<br>Longitude: " + position.coords.longitude;
+              y.value = position.coords.latitude
+              z.value = position.coords.longitude
+            //   w.type  = "submit"
+                console.log(position.coords.latitude,position.coords.longitude)
+
+            }
+            </script>
+
+</html>

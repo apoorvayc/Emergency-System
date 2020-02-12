@@ -1,0 +1,49 @@
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
+<!DOCTYPE html>
+<div class="container">
+    <!-- Top Navigation -->
+    Welcome {{e}}
+    <div>
+<button id="logout" type="button" onclick="location.href='{% url 'log' %}'">Logout</button>
+</div>
+	<div class="content">
+		<h1>WHO ARE YOU?</h1>
+		<div class="grid">
+
+			<figure class="effect-oscar">
+				<img src=""/>
+				<a href="http://127.0.0.1:8000/type/">
+                    <figcaption>
+					<h2> <span>Witness</span></h2>
+                        <p><i>The purpose of human life is to serve, and to show compassion and the will to help others.</i></p>
+
+				</figcaption>
+                </a>
+			</figure>
+
+           <a href="http://127.0.0.1:8000/type/">
+			<figure class="effect-oscar">
+				<img src=""/>
+				<figcaption>
+
+					<h2><span>Victim</span></h2>
+                    <p><i>God helps those who help themselves.</i></p>
+
+				</figcaption>			
+			</figure>
+            </a>
+		</div>
+
+	</div>
+
+</div>
+    {% for i in feeds %}
+<p>{{ i.VictimName }} is not feeling well at Andheri East</p>
+<p> And is hospitalized to {{ i.HospitalCalled }}</p>
+<p>{{ i.Pincode }}</p>
+<hr>
+{% endfor %}
