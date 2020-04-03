@@ -31,7 +31,7 @@ urlpatterns = [
     path('logout/', views.logout, name="log"),
     path('postsignup/', views.postsignup, name='postsignup'),
     path('signup/', views.signUp, name="signup"),
-    path('latlongi', views.latlongi, name="get_Location"),
+    path('latlongi', views.notify_emergencycontact, name="get_Location"),
     path('latlong/', views.get_latlong, name="latlong")
 
 

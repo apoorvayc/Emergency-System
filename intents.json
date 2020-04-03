@@ -10,8 +10,8 @@
          "context_set": ""
         },
         {"tag": "accident + major",
-         "patterns": ["vehicle", "accident", "road", "family", "bridge", "hit", "fell", "drive"],
-         "responses": ["If the casualty appears unresponsive, ask them loudly if they are OK and if they can open their eyes. If they respond, you can leave them in the position they're in until help arrives.If there's no response gently lay them on their back and open their airway.To open the airway, place one hand on the casualty’s forehead and gently tilt their head back, lifting the tip of the chin using two fingers.If you think the person may have a spinal injury, place your hands on either side of their head and use your fingertips to gently lift the angle of the jaw forward and upwards, without moving the head, to open the airway. Take care not to move the casualty’s neck.If they're breathing normally, place them in the recovery position so their airway remains clear of obstructions and continue to monitor normal breathing."],
+         "patterns": ["vehicle", "accident", "road", "family", "bridge", "hit", "drive","fall","fell"],
+         "responses": ["If the casualty appears unresponsive ask them loudly if they are OK and if they can open their eyes If they respond  you can leave them in the position they are in until help arrives If there is no response gently lay them on their back and open their airway To open the airway place one hand on the casualtys forehead and gently tilt their head back lifting the tip of the chin using two fingers If you think the person may have a spinal injury place your hands on either side of their head and use your fingertips to gently lift the angle of the jaw forward and upwards  without moving the head  to open the airway  Take care not to move the casualtys neck If they are breathing normally place them in the recovery position so their airway remains clear of obstructions and continue to monitor normal breathing"],
          "context_set": ""
         },
 

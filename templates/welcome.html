@@ -4,46 +4,46 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
 <!DOCTYPE html>
-<div class="container">
+
+<div class="container" style="">
     <!-- Top Navigation -->
-    Welcome {{e}}
-    <div>
-<button id="logout" type="button" onclick="location.href='{% url 'log' %}'">Logout</button>
-</div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 style="color:#9152f8"><span style="text-shadow: 1px 1px #b224ef">Welcome </span> <span style="color:black;font-style: italic">{{e}}</span> </h3>
+            <button id="logout" type="button" onclick="location.href='{% url 'log' %}'" style="background-color: #9152f8;color:white;border-radius: 10px">Logout</button>
+        </div>
+        <div class="col-md-6"><img src="{% static 'images/bell.jpg'%} " style="float: right; width: 100px; height: auto" alt="some img"></div>
+    </div>
+
 	<div class="content">
-		<h1>WHO ARE YOU?</h1>
+		<h1 style="text-align: center;color: #9152f8;text-shadow: 2px 2px #b224ef">WHO ARE YOU?</h1>
 		<div class="grid">
-
-			<figure class="effect-oscar">
-				<img src=""/>
-				<a href="http://127.0.0.1:8000/type/">
-                    <figcaption>
-					<h2> <span>Witness</span></h2>
-                        <p><i>The purpose of human life is to serve, and to show compassion and the will to help others.</i></p>
-
-				</figcaption>
-                </a>
-			</figure>
-
-           <a href="http://127.0.0.1:8000/type/">
-			<figure class="effect-oscar">
-				<img src=""/>
-				<figcaption>
-
-					<h2><span>Victim</span></h2>
-                    <p><i>God helps those who help themselves.</i></p>
-
-				</figcaption>			
-			</figure>
+            <a href="http://127.0.0.1:8000/type/">
+                <figure class="effect-oscar" style="box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6)">
+                    <img src="" alt = "">
+                        <figcaption>
+                            <h2> <span>Witness</span></h2>
+                            <p><i>The purpose of human life is to serve, and to show compassion and the will to help others.</i></p>
+                    </figcaption>
+                </figure>
             </a>
+            <a href="http://127.0.0.1:8000/type/">
+                <figure class="effect-oscar" style="box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.6)">
+                    <img src="" alt = "">
+                        <figcaption>
+                            <h2><span>Victim</span></h2>
+                            <p><i>God helps those who help themselves.</i></p>
+                        </figcaption>
+                </figure>
+                </a>
 		</div>
-
 	</div>
 
-</div>
+
     {% for i in feeds %}
 <p>{{ i.VictimName }} is not feeling well at Andheri East</p>
 <p> And is hospitalized to {{ i.HospitalCalled }}</p>
 <p>{{ i.Pincode }}</p>
 <hr>
 {% endfor %}
+</div>

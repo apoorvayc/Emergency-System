@@ -15,34 +15,35 @@
         background-color: white;
         color: black;
     }
-
+.box{
+    padding : 20px!important;;
+}
 
 </style>
-<script>
 
-</script>
 <div class="container">
-    <div class="row">
-         <input type="hidden" id = "demo"></input>
+    <div class="row" style="padding: 50px;text-align: center;">
+        <input type="hidden" id = "demo">
         <form  method="POST"  action="/latlongi">
-    {% csrf_token %}
-    <input type="hidden" name= 'latitude' id="latitude" >
-    <input type="hidden" name="longitude" id  ='longitude'>
+        {% csrf_token %}
+        <input type="hidden" name= 'latitude' id="latitude" >
+        <input type="hidden" name="longitude" id  ='longitude'>
 
-        <div class="col-md-6">
-            <p  style=" "> {{ text }}</p>
+        <div class="col-md-6 box" style="color:#9152f8;background-color: #b224ef;font-weight:800;height: 500px;padding-top: 20px;border: 5px solid white;box-shadow : 0px 0px 20px #9152f8">
 
-               <button type="button" onclick="getLocation()" id="final">Share my location</button>
+            <p  style="color:#9152f8;padding: 20px;height:400px"> {{ text }}</p>
 
+               <button type="button" style="height: 44px;" onclick="getLocation()" id="final">Share my location</button>
 
-        </div>
-        <div class="col-md-6">
-            <p  style=""> {{ textlang }}</p>
-
-               <button type="submit"  > Get Nearest Hospitals</button>
 
         </div>
-             </form>
+        <div class="col-md-6 box" style="background-color: #b224ef;color:#9152f8;font-weight:800;height: 500px;padding-top: 20px;border: 5px solid white;box-shadow: 5px 0px 20px #9152f8">
+
+            <p  style="padding: 20px;color:#9152f8;height:400px"> {{ textlang }}</p>
+
+               <button type="submit" style="height: 44px;" > Get Nearest Hospitals</button>
+        </div>
+    </form>
     </div>
 </div>
 

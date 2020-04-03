@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import json
-
 from django.views.decorators.csrf import csrf_exempt
 from speech_recognition import Microphone
 from textblob import TextBlob
@@ -10,10 +9,8 @@ import pyrebase
 from django.contrib import auth
 import nltk
 from nltk.stem.lancaster import LancasterStemmer
-
 from aurnag import settings
 from django.core.mail import send_mail
-
 stemmer = LancasterStemmer()
 import numpy
 import tflearn
@@ -23,25 +20,19 @@ import json
 import speech_recognition as sr
 
 r = sr.Recognizer()
-
-# from django.shortcuts import render
-# from googleplaces import GooglePlaces, types, lang
-# import requests
-# import json
-# from django.contrib.gis.geoip2 import GeoIP2
-# from django.http import HttpResponse
-# import socket
-# from django.views.decorators.csrf import csrf_exempt
-# from geolocation.main import GoogleMaps
-# from emergency2.models import *
-# from emergency import settings
 import pyrebase
 from django.core.mail import send_mail
 import pickle
 x,y = 0,0
+
+
+
+
+
+
+
 with open("intents.json") as file :
     data = json.load(file)
-
 try:
     with open("./data.pickle", "rb") as f:
         words, labels, training, output = pickle.load(f)
@@ -50,7 +41,6 @@ except:
     labels = []
     docs_x = []
     docs_y = []
-
     for intent in data["intents"]:
         for pattern in intent["patterns"]:
             wrds = nltk.word_tokenize(pattern)
@@ -66,11 +56,16 @@ except:
     print(words)
     labels = sorted(labels)
 
-    training = []
-    output = []
 
+
+
+
+
+
+
+
+    training, output = [], []
     out_empty = [0 for _ in range(len(labels))]
-
     for x, doc in enumerate(docs_x):
         bag = []
         wrds = [stemmer.stem(w.lower()) for w in doc]
@@ -79,29 +74,21 @@ except:
                 bag.append(1)
             else:
                 bag.append(0)
-
         output_row = out_empty[:]
         output_row[labels.index(docs_y[x])] = 1
-
         training.append(bag)
         output.append(output_row)
-
     training = numpy.array(training)
     output = numpy.array(output)
-
     with open("data.pickle", "wb") as f:
         pickle.dump((words, labels, training, output), f)
-
 tensorflow.reset_default_graph()
-
 net = tflearn.input_data(shape=[None, len(training[0])])
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
 net = tflearn.regression(net)
-
 model = tflearn.DNN(net)
-
 try:
     model.load("model.tflearn")
 except:
@@ -113,18 +100,37 @@ except:
 
 
 
+
+
+
+
+
+
+
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
-
     s_words = nltk.word_tokenize(s)
     s_words = [stemmer.stem(word.lower()) for word in s_words]
-
     for se in s_words:
         for i, w in enumerate(words):
             if w == se:
                 bag[i] = 1
             print(se, w)
+    for i in range(len(words)) :
+        print(bag[i], words[i])
     return numpy.array(bag)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 config = {
@@ -155,7 +161,6 @@ def signIn(request):
         print(users)
         list2 = []
         for i in users:
-
             if currentuserrid == str(db.child('users').child(i).child('email').get().val()):
                 pincode = db.child('users').child(i).child('pincode').get().val()
                 print("Pincode")
@@ -236,9 +241,9 @@ def logout(request):
             # request.session['uid']=None
         else:
             message = "user is not logged in"
-            return render(request, "signIn.html", {"msg": message})
+            return render(request, "signin.html", {"msg": message})
         auth.logout(request)
-    return render(request, 'signIn.html')
+    return render(request, 'signin.html')
 
 
 def signUp(request):
@@ -289,10 +294,10 @@ def postsignup(request):
 
 
 def audio(request):
-
     with sr.Microphone() as source:
         print('Say Something:')
         audio = r.listen(source, phrase_time_limit=5)
+        print(audio)
         print('Done!')
     db = firebase.database()
     userss = db.child("users").get().val()
@@ -303,25 +308,26 @@ def audio(request):
         if mail == usermail:
             lang = db.child("users").child(i).child("language").get().val()
             print(lang)
-
     text = r.recognize_google(audio, language=lang)
     wordzz = TextBlob(text)
-    f = wordzz.translate(from_lang=lang, to='en-IN')
-    print(str(f))
+    if lang != "en-IN":
+        f = wordzz.translate(from_lang=lang, to='en-IN')
+    else:
+        f = wordzz
     inp = str(f)
-
     results = model.predict([bag_of_words(inp, words)])
     results_index = numpy.argmax(results)
     tag = labels[results_index]
-
     for tg in data["intents"]:
         if tg['tag'] == tag:
             responses = tg['responses']
-
-    print(responses)
     word = TextBlob(responses[0])
-    f = word.translate(from_lang='en-IN', to=lang)
-    print(str(f))
+    if lang != "en-IN":
+        f = word.translate(from_lang="en-IN", to=lang)
+    else:
+        f = word
+    # f = "HI"
+    # print(str(f))
 
     return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
 
@@ -367,7 +373,11 @@ def text2(request):
         print(val)
         val2 = request.POST["radiobutton2"]
         print(val2)
-        l = val +""+ val2
+        if val2 == "Fire":
+            l = val2
+        else:
+            # l = val +" "+ val2
+            l= val2
         print(l)
         results = model.predict([bag_of_words(l, words)])
         results_index = numpy.argmax(results)
@@ -388,13 +398,14 @@ def text2(request):
                 break
 
         word = TextBlob(responses[0])
+        # print(word)
         f = word.translate(from_lang='en-IN', to=lang)
         f = (str(f))
-
+        # f = "HI"
         return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
 
 
-API_KEY = 'AIzaSyDc01i-w1GdP0Gzu7hryQM4g81XRZUXVc4'
+API_KEY = ''
 
 # useremail = request.session['email']
 #                     users = db.child('users').get().val()
@@ -409,6 +420,36 @@ API_KEY = 'AIzaSyDc01i-w1GdP0Gzu7hryQM4g81XRZUXVc4'
 #                             send_mail( subject, Address, email_from, receiverlist, fail_silently=False )
 #                     break
 
+import reverse_geocoder as rg
+def notify_emergencycontact(request) :
+    print("Hello from latlongi")
+    latitude = request.POST['latitude']
+    longitude = request.POST['longitude']
+    coordinates = (latitude,longitude)
+    if request.method == "POST":
+        currentuserrid = request.session['email']
+        print(currentuserrid)
+        databaseuser = db.child('users').get().val()
+        for l in databaseuser:
+            if str(db.child('users').child(l).child('email').get().val()) == currentuserrid:
+                emergencyemail = db.child('users').child(l).child('emergencyemail').get().val()
+                nameofuser = db.child('users').child(l).child('name').get().val()
+                print (rg.search(coordinates))
+                result = rg.search(coordinates)
+                t = ""
+                addr = result[0]
+                for add in addr.items() :
+                    t += str(add[1]) + " "
+                Address = str(db.child('users').child(l).child('name').get().val()) + " is not feeling comfortable at location :" + t + " Please look after them"
+                print(Address)
+                email_from = settings.EMAIL_HOST_USER
+                subject = str(db.child('users').child(l).child('name').get().val()) + " is in an Emergency!!!"
+                recipient_list = []
+                recipient_list.append(emergencyemail)
+                send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
+                print("Message Sent")
+                break
+    return render(request,'welcome.html',{"e": request.session['email']})
 def latlongi(request):
     print("Hello from latlongi")
     if request.method == "POST":
@@ -420,7 +461,7 @@ def latlongi(request):
         # idhar apoorva ka code aayega to fnd pincode
         from geopy.geocoders import GoogleV3
 
-        geolocator = GoogleV3(api_key='AIzaSyA3W-x4zqHwfCJ2xgzLvuO1MVPlWwp_XJI')
+        geolocator = GoogleV3(api_key='')
         latlong = latitude + ',' + longitude
         locations = geolocator.reverse(latlong)
         if locations:

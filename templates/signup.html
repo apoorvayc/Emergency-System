@@ -81,26 +81,24 @@ if(pass1.value.match(passw))
               
                 <div class="card-heading"></div>
                 <div class="card-body">
-                   <span>
-                    <h2 class="title" style=" display: inline-block">Registration Info</h2>
-                     <div class="p-t-10" style=" display: inline-block">
+                    <span>
+                        <h2 class="title" style=" display: inline-block">Registration Info</h2>
+                        <div class="p-t-10" style=" display: inline-block">
                             <button class="btn btn--pill btn--green" value="login" 
                             style="position: relative;right:-150px;" 
                             onclick="location.href='{% url 'login' %}'"
                             >Login</button>
                         </div>
-                   </span>
+                    </span>
                     <form method="POST" action="/postsignup/" method="post">
-                    {% csrf_token %}
+                        {% csrf_token %}
                         <div class="input-group">
                             <input class="input--style-3" type="text" maxlength="30" pattern="^[a-zA-Z ]*$" placeholder="name" name="name"required >
                         </div>
-
                         <div class="input-group">
                             <input class="input--style-3 js-datepicker" type="text" placeholder="Birthdate" name="birthday" required>
                             <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                         </div>
-
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="language" required>
@@ -119,9 +117,6 @@ if(pass1.value.match(passw))
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
-
-  
-                        
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="bloodgrp" required>
@@ -138,54 +133,42 @@ if(pass1.value.match(passw))
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
-
-                           <div class="input-group">
+                        <div class="input-group">
                             <textarea  class="input--style-3" type="text" rows="4" cols="50"  placeholder="Permanent Address" name="address" required></textarea>
                         </div>
-
                         <div class="input-group">
                             <input class="input--style-3" type="email"  maxlength="50"placeholder="Email" name="email" required >
                         </div>
-
                         <div class="input-group">
                             <input class="input--style-3" type="text" placeholder="mobileno" name="mobileno"  pattern="[789][0-9]{9}"
                              minlength="10" maxlength="10" required>
                         </div>
-  
                         <div class="input-group">
                             <textarea  class="input--style-3" type="text" rows="4" cols="50"  placeholder="HealthIssues" name="healthissue"></textarea>
                         </div>
-  
-
                         <div class="input-group">
                             <input class="input--style-3" type="text" maxlength="30" pattern="^[a-zA-Z ]*$" placeholder="Emergency Contact Name" name="ename" required >
                         </div>
-                       
                         <div class="input-group">
                             <input class="input--style-3" type="email"  maxlength="50"placeholder="Emergency Contact Email" name="emergencyemail" required >
                         </div>
-
                         <div class="input-group">
                             <input class="input--style-3" type="text" placeholder="Emergency Contact Number" name="emobileno"  pattern="[789][0-9]{9}"
                              minlength="10" maxlength="10" required>
                         </div>
-
-                          <div class="input-group">
+                        <div class="input-group">
                             <input class="input--style-3" type="password" name="password" id="pass1" 
                              onkeyup="checkpass(); return false;"
                             placeholder="Password" required >
                         </div>
                         <p style="color:white;">Must contain at least one number ,one symbol and one uppercase and lowercase letter,
             and at least 6 or more characters</p>   
-
                         <div class="input-group">
                             <input class="input--style-3" type="password" name="repeatpassword" id="pass2" 
                              onkeyup="checkpass(); return false;"
                             placeholder="Confirm Password" required >
                         </div> 
                         <div id="error"></div>
-       
-
                         <div class="p-t-10">
                             <button class="btn btn--pill btn--green" type="submit" value="SignUp">SignUp</button>
                         </div>
