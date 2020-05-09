@@ -381,31 +381,7 @@ def text1(request):
         text = request.POST.get("textinput1")
         inp = str(text)
         return first_aid(request,inp)
-        # results = model.predict([bag_of_words(inp, words)])
-        # results_index = numpy.argmax(results)
-        # tag = labels[results_index]
-        # for tg in data["intents"]:
-        #     if tg['tag'] == tag:
-        #         responses = tg['responses']
-
-        # print(responses)
-        # db = firebase.database()
-        # userss = db.child("users").get().val()
-        # usermail = request.session['email']
-        # lang = ""
-        # for i in userss:
-        #     mail = db.child("users").child(i).child("email").get().val()
-        #     if mail == usermail:
-        #         lang = db.child("users").child(i).child("language").get().val()
-        #         print(lang)
-        #         break
-
-        # word = TextBlob(responses[0])
-        # f = word.translate(from_lang='en-IN', to=lang)
-        # f = (str(f))
-
-        # return render(request, 'home.html', {"text": responses[0], "textlang": f})
-
+       
 
 def text2(request):
     if request.method == "POST":
