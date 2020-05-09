@@ -30,9 +30,11 @@ urlpatterns = [
     path('postsign/', views.postsign, name="postsign"),
     path('logout/', views.logout, name="log"),
     path('postsignup/', views.postsignup, name='postsignup'),
+    path('first_aid/', views.first_aid, name='firstaid'),
     path('signup/', views.signUp, name="signup"),
+    path('sharemylocation/',views.latlongi,name="sharemylocation"),
     path('latlongi', views.notify_emergencycontact, name="get_Location"),
-    path('latlong/', views.get_latlong, name="latlong")
+    #path('latlong/', views.get_latlong, name="latlong")
 
 
 ]

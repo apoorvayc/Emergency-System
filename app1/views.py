@@ -134,14 +134,14 @@ def bag_of_words(s, words):
 
 
 config = {
-    'apiKey': "AIzaSyAoCHa8kZA8FuYUexiEpvyQsBw_YTgAZK0",
-    'authDomain': "emergencysystem-1884f.firebaseapp.com",
-    'databaseURL': "https://emergencysystem-1884f.firebaseio.com",
-    'projectId': "emergencysystem-1884f",
-    'storageBucket': "emergencysystem-1884f.appspot.com",
-    'messagingSenderId': "950571994549",
-    'appId': "1:950571994549:web:a910ec642c4c64b04a5dfc",
-    'measurementId': "G-L3DDX6WNXS"
+    'apiKey': "AIzaSyC4cTT6pMJEgRJkFppofg2mTT7OB9j1M7U",
+    'authDomain': "suraksha3630.firebaseapp.com",
+    'databaseURL': "https://suraksha3630.firebaseio.com",
+    'projectId': "suraksha3630",
+    'storageBucket': "suraksha3630.appspot.com",
+    'messagingSenderId': "307276178334",
+    'appId': "1:307276178334:web:9f54433327e01a49c3ec8f",
+    'measurementId': "G-3BGDJT7PME"
 }
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
@@ -165,21 +165,27 @@ def signIn(request):
                 pincode = db.child('users').child(i).child('pincode').get().val()
                 print("Pincode")
                 feeds = database.child('Feeds').get().val()
-
-                for i in feeds:
-                    print(i)
-                    print(str(database.child('Feeds').child(i).child('pincode').get().val()))
-
-                    if str(database.child('Feeds').child(i).child('pincode').get().val()) == str(pincode) :
-                        id = database.child('Feeds').child(i).child('VictimId').get().val()
-                        print(id)
-                        list2.append({
-                            "VictimName": database.child('users').child(id).child('name').get().val(),
-                            "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
-                            "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
-                        })
-                print(list2)
-                break
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+                print(feeds)
+                if feeds:
+                    for i in feeds:
+                        print(i)
+                        print(str(database.child('Feeds').child(i).child('pincode').get().val()))
+                        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+                        if str(database.child('Feeds').child(i).child('pincode').get().val()) == str(400058) :
+                            print("jjjjjjj")
+                            id = database.child('Feeds').child(i).child('VictimId').get().val()
+                            print("WWWWWWWWWWWWWWWWWWWWWWWW")
+                            print(id)
+                            #print(database.child('users').child(id).child('name').get().val())
+                            print("4444444")
+                            list2.append({
+                                "VictimName": database.child('users').child(id).child('name').get().val(),
+                                "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
+                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
+                            })
+                    print(list2)
+                    break
 
         return render(request, "welcome.html", {"e": request.session['email'], 'feeds': list2})
     return render(request, "signIn.html")
@@ -208,6 +214,7 @@ def postsign(request):
             message = "Please check your emailID / Password"
             return render(request, "signIn.html", {"msg": message})
     else:
+        print("****************************************")
         currentuserrid = request.session['email']
         print("Email ", currentuserrid)
         users = db.child('users').get().val()
@@ -219,16 +226,18 @@ def postsign(request):
                 pincode = db.child('users').child(i).child('pincode').get().val()
                 print("Pincode", pincode)
                 feeds = database.child('Feeds').get().val()
-
-                for i in feeds:
-                    if str(database.child('Feeds').child(i).child('pincode').get().val()) == pincode:
-                        id = database.child('Feeds').child(i).child('VictimId').get().val()
-                        list2.append({
-                            "VictimName": database.child('users').child(id).child('name').get().val(),
-                            "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
-                            "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
-                        })
-                print(list2)
+                print(feeds)
+                print("rrrrrrrrrrrrrrrrr")
+                if feeds:
+                    for i in feeds:
+                        if str(database.child('Feeds').child(i).child('pincode').get().val()) == pincode:
+                            id = database.child('Feeds').child(i).child('VictimId').get().val()
+                            list2.append({
+                                "VictimName": database.child('users').child(id).child('name').get().val(),
+                                "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
+                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
+                            })
+                    print(list2)
         return render(request, "welcome.html", {"e": request.session['email'], 'feeds': list2})
 
 
@@ -292,6 +301,33 @@ def postsignup(request):
     request.session['email'] = email
     return render(request, "signIn.html")
 
+def first_aid(request,input):
+    results = model.predict([bag_of_words(input, words)])
+    results_index = numpy.argmax(results)
+    tag = labels[results_index]
+    for tg in data["intents"]:
+        if tg['tag'] == tag:
+            responses = tg['responses']
+
+    print(responses)
+    db = firebase.database()
+    userss = db.child("users").get().val()
+    usermail = request.session['email']
+    lang = ""
+    for i in userss:
+        mail = db.child("users").child(i).child("email").get().val()
+        if mail == usermail:
+            lang = db.child("users").child(i).child("language").get().val()
+            print(lang)
+            break
+
+    word = TextBlob(responses[0])
+    f = word.translate(from_lang='en-IN', to=lang)
+    f = (str(f))
+
+    return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
+
+    
 
 def audio(request):
     with sr.Microphone() as source:
@@ -308,58 +344,66 @@ def audio(request):
         if mail == usermail:
             lang = db.child("users").child(i).child("language").get().val()
             print(lang)
-    text = r.recognize_google(audio, language=lang)
+    try:
+        text = r.recognize_google(audio, language=lang)
+    except:
+        return render(request, 'type.html',{"message":'Sorry We could not get your audio'})
+        
     wordzz = TextBlob(text)
     if lang != "en-IN":
         f = wordzz.translate(from_lang=lang, to='en-IN')
     else:
         f = wordzz
+    print("************************************")
+    print(str(f))
     inp = str(f)
-    results = model.predict([bag_of_words(inp, words)])
-    results_index = numpy.argmax(results)
-    tag = labels[results_index]
-    for tg in data["intents"]:
-        if tg['tag'] == tag:
-            responses = tg['responses']
-    word = TextBlob(responses[0])
-    if lang != "en-IN":
-        f = word.translate(from_lang="en-IN", to=lang)
-    else:
-        f = word
-    # f = "HI"
-    # print(str(f))
+    return first_aid(request,inp)
+    # results = model.predict([bag_of_words(inp, words)])
+    # results_index = numpy.argmax(results)
+    # tag = labels[results_index]
+    # for tg in data["intents"]:
+    #     if tg['tag'] == tag:
+    #         responses = tg['responses']
+    # word = TextBlob(responses[0])
+    # if lang != "en-IN":
+    #     f = word.translate(from_lang="en-IN", to=lang)
+    # else:
+    #     f = word
+    # # f = "HI"
+    # # print(str(f))
 
-    return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
+    # return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
 
 
 def text1(request):
     if request.method == "POST":
         text = request.POST.get("textinput1")
         inp = str(text)
-        results = model.predict([bag_of_words(inp, words)])
-        results_index = numpy.argmax(results)
-        tag = labels[results_index]
-        for tg in data["intents"]:
-            if tg['tag'] == tag:
-                responses = tg['responses']
+        return first_aid(request,inp)
+        # results = model.predict([bag_of_words(inp, words)])
+        # results_index = numpy.argmax(results)
+        # tag = labels[results_index]
+        # for tg in data["intents"]:
+        #     if tg['tag'] == tag:
+        #         responses = tg['responses']
 
-        print(responses)
-        db = firebase.database()
-        userss = db.child("users").get().val()
-        usermail = request.session['email']
-        lang = ""
-        for i in userss:
-            mail = db.child("users").child(i).child("email").get().val()
-            if mail == usermail:
-                lang = db.child("users").child(i).child("language").get().val()
-                print(lang)
-                break
+        # print(responses)
+        # db = firebase.database()
+        # userss = db.child("users").get().val()
+        # usermail = request.session['email']
+        # lang = ""
+        # for i in userss:
+        #     mail = db.child("users").child(i).child("email").get().val()
+        #     if mail == usermail:
+        #         lang = db.child("users").child(i).child("language").get().val()
+        #         print(lang)
+        #         break
 
-        word = TextBlob(responses[0])
-        f = word.translate(from_lang='en-IN', to=lang)
-        f = (str(f))
+        # word = TextBlob(responses[0])
+        # f = word.translate(from_lang='en-IN', to=lang)
+        # f = (str(f))
 
-        return render(request, 'home.html', {"text": responses[0], "textlang": f})
+        # return render(request, 'home.html', {"text": responses[0], "textlang": f})
 
 
 def text2(request):
@@ -379,33 +423,35 @@ def text2(request):
             # l = val +" "+ val2
             l= val2
         print(l)
-        results = model.predict([bag_of_words(l, words)])
-        results_index = numpy.argmax(results)
-        tag = labels[results_index]
+        return first_aid(request,l)
+        ###################################################### SAME for text1  and text2
+        # results = model.predict([bag_of_words(l, words)])
+        # results_index = numpy.argmax(results)
+        # tag = labels[results_index]
 
-        for tg in data["intents"]:
-            if tg['tag'] == tag:
-                responses = tg['responses']
-        db = firebase.database()
-        userss = db.child("users").get().val()
-        usermail = request.session['email']
-        lang = ""
-        for i in userss:
-            mail = db.child("users").child(i).child("email").get().val()
-            if mail == usermail:
-                lang = db.child("users").child(i).child("language").get().val()
-                print(lang)
-                break
+        # for tg in data["intents"]:
+        #     if tg['tag'] == tag:
+        #         responses = tg['responses']
+        # db = firebase.database()
+        # userss = db.child("users").get().val()
+        # usermail = request.session['email']
+        # lang = ""
+        # for i in userss:
+        #     mail = db.child("users").child(i).child("email").get().val()
+        #     if mail == usermail:
+        #         lang = db.child("users").child(i).child("language").get().val()
+        #         print(lang)
+        #         break
 
-        word = TextBlob(responses[0])
-        # print(word)
-        f = word.translate(from_lang='en-IN', to=lang)
-        f = (str(f))
-        # f = "HI"
-        return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
+        # word = TextBlob(responses[0])
+        # # print(word)
+        # f = word.translate(from_lang='en-IN', to=lang)
+        # f = (str(f))
+        # # f = "HI"
+        
+        # return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
 
 
-API_KEY = ''
 
 # useremail = request.session['email']
 #                     users = db.child('users').get().val()
@@ -450,29 +496,37 @@ def notify_emergencycontact(request) :
                 print("Message Sent")
                 break
     return render(request,'welcome.html',{"e": request.session['email']})
+@csrf_exempt
 def latlongi(request):
     print("Hello from latlongi")
-    if request.method == "POST":
+    print(request.method)
+       
+    if request.method == "GET":
+        print(request)
+        print("555555555555555555555555555555555")
 
-
-        latitude = request.POST['latitude']
-        longitude = request.POST['longitude']
+        latitude = request.GET.get('latitude')
+        longitude = request.GET.get('longitude')
+        print("ddddddddddddddddddddddddddd")
+        print(latitude)
+        print(longitude)
         print("Hello from latlongi", latitude, longitude)
-        # idhar apoorva ka code aayega to fnd pincode
-        from geopy.geocoders import GoogleV3
+        # CODE TO BE ADDED
+        # from geopy.geocoders import GoogleV3
 
-        geolocator = GoogleV3(api_key='')
-        latlong = latitude + ',' + longitude
-        locations = geolocator.reverse(latlong)
-        if locations:
+        # geolocator = GoogleV3(api_key='')
+        # latlong = latitude + ',' + longitude
+        # locations = geolocator.reverse(latlong)
+        # if locations:
 
-            i = locations[0].address.rfind(',')
-            print( " sdfghgf", locations[0].address)
-            print(locations[0].address[i - 6:i])
-            pincode = str(locations[0].address[i - 6:i])
+        #     i = locations[0].address.rfind(',')
+        #     print( " sdfghgf", locations[0].address)
+        #     print(locations[0].address[i - 6:i])
+        #     pincode = str(locations[0].address[i - 6:i])
 
 
-
+        #Temporory lets consider pincode to be
+        pincode='400058'
 
         currentuserrid = request.session['email']
 
@@ -482,11 +536,10 @@ def latlongi(request):
 
 
         k = 0
-        # print(data)
         databaseuser = db.child('users').get().val()
-
         for i in data:
             print(i)
+            hospitalname=i
             hospital = str(db.child('Pincode').child(pincode).child(i).child('type').get().val()).split(',')
             print(hospital)
             for j in hospital:
@@ -496,6 +549,7 @@ def latlongi(request):
                     k = 1
 
                     for l in databaseuser:
+                        userid=l
                         if str(db.child('users').child(l).child('email').get().val()) == currentuserrid:
                             hospitalemail = str(db.child('Pincode').child(pincode).child(i).child('email').get().val())
                             emargencyemail = db.child('users').child(l).child('emergencyemail').get().val()
@@ -510,7 +564,7 @@ def latlongi(request):
                             recipient_list = []
                             recipient_list.append(hospitalemail)
                             recipient_list.append(emargencyemail)
-                            send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
+                            #send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
                             print("Message Sent")
                             break
 
@@ -524,6 +578,7 @@ def latlongi(request):
             databaseuser = db.child('users').get().val()
             for i in data:
                 for j in databaseuser:
+                    userid=j
                     if db.child('users').child(j).child('email').get().val() == currentuserrid:
                         print(i)
                         print("Hospital Nahi mila ")
@@ -543,55 +598,37 @@ def latlongi(request):
                         recipient_list.append(hospitalemail)
                         recipient_list.append(emargencyemail)
                         # hospital =str(db.child(pincode).child(i).child('type').get().val()).split(',')
-                        send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
+                        #send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
                         break
 
                 break
 
-        users = db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2')
+        #users = db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2')
 
-        # feeddata = {
-        #         "VictimId":currentuserrid,
-        #         "pincode":"400060",
-        #         "HospitalCalled":"NanavtiHospital"
-        # }
+        feeddata = {
+                "VictimId":userid,
+                "pincode":pincode,
+                "HospitalCalled":hospitalname
+        }
 
-        # p = db2.child('Feeds').push(feeddata)
+        p = db.child('Feeds').push(feeddata)
 
-        print(users)
-        print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
-        print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
+        # print(users)
+        # print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
+        # print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
 
         print("Message Sent To ")
-
+    else:
+        print("nnnnnnnnnnnnnnnnnnnnnnnnpooooooooooooooooooo")
     return HttpResponse("DOne")
 
 
 def get_latlong(request):
-    from django.shortcuts import render
-    from django.contrib import auth
-
-    import json
-
-    import pyrebase
-
-    config = {
-        'apiKey': "AIzaSyB6s7DSe9M6MZk7g77cMTuoqIO6d-ebKwI",
-        'authDomain': "garbage-truck-monitoring.firebaseapp.com",
-        'databaseURL': "https://garbage-truck-monitoring.firebaseio.com",
-        'projectId': "garbage-truck-monitoring",
-        'storageBucket': "garbage-truck-monitoring.appspot.com",
-        'messagingSenderId': "549306067582",
-        'appId': "1:549306067582:web:bbaeac9ec829045099c62f",
-        'measurementId': "G-X9JCRW3TR0"
-    }
-    firebase = pyrebase.initialize_app(config)
-
-    db = firebase.database()
     bin = db.child("Bin").get().val()
     lat, lon, cap = [], [], []
     cap_70, cap_20, cap_20_70 = [], [], []
     print(bin)
+    
     for i in bin:
         height = (int(db.child("Bin").child(i).child("height").get().val()))
         lati = (float(db.child("Bin").child(i).child("latitude").get().val()))
@@ -625,7 +662,7 @@ def get_latlong(request):
 #    return render(request,'latlong.html',{"cap_20":cap_20,"cap_70":cap_70,"cap_20_70":cap_20_70})
 def type(request):
 
-    return render(request, "type.html" )
+    return render(request, "type.html",{"message":''})
 """
 
 """

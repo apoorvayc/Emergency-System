@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-6"><img src="{% static 'images/bell.jpg'%} " style="float: right; width: 100px; height: auto" alt="some img"></div>
     </div>
-
+    <div class="row">
 	<div class="content">
 		<h1 style="text-align: center;color: #9152f8;text-shadow: 2px 2px #b224ef">WHO ARE YOU?</h1>
 		<div class="grid">
@@ -37,13 +37,19 @@
                 </figure>
                 </a>
 		</div>
-	</div>
+    </div>
+    </div>
 
 
     {% for i in feeds %}
-<p>{{ i.VictimName }} is not feeling well at Andheri East</p>
-<p> And is hospitalized to {{ i.HospitalCalled }}</p>
-<p>{{ i.Pincode }}</p>
-<hr>
-{% endfor %}
-</div>
+    <div class="row">
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ i.VictimName }}</strong> is not feeling well at Andheri East
+        And is hospitalized to <strong>{{ i.HospitalCalled }}</strong>
+        <strong>{{ i.Pincode }}</strong> 
+      </div>
+    </div>
+    {% endfor %}
+
+

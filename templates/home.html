@@ -1,6 +1,7 @@
 {% load static %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
 
@@ -32,9 +33,7 @@
         <div class="col-md-6 box" style="color:#9152f8;background-color: #b224ef;font-weight:800;height: 500px;padding-top: 20px;border: 5px solid white;box-shadow : 0px 0px 20px #9152f8">
 
             <p  style="color:#9152f8;padding: 20px;height:400px"> {{ text }}</p>
-
                <button type="button" style="height: 44px;" onclick="getLocation()" id="final">Share my location</button>
-
 
         </div>
         <div class="col-md-6 box" style="background-color: #b224ef;color:#9152f8;font-weight:800;height: 500px;padding-top: 20px;border: 5px solid white;box-shadow: 5px 0px 20px #9152f8">
@@ -51,30 +50,52 @@
 
 
 
-
-
+<div>
+<p id="demo"></p>
+<p id="latitude"></p>
+<p id="longitude"></p>
+</div>
 <script>
-            var x = document.getElementById("demo");
-            var y  =document.getElementById("latitude");
-            var z  = document.getElementById("longitude");
-            var w = document.getElementById("final");
-            function getLocation() {
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-              } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-              }
-            }
+  var x = document.getElementById("demo");
+  var y  =document.getElementById("latitude");
+  var z  = document.getElementById("longitude");
+  function getLocation() {
 
-            function showPosition(position) {
-              x.innerHTML = "Latitude: " + position.coords.latitude +
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+} 
+
+
+
+  function showPosition(position){
+    
+    x.innerHTML = "Latitude: " + position.coords.latitude +
               "<br>Longitude: " + position.coords.longitude;
-              y.value = position.coords.latitude
-              z.value = position.coords.longitude
+              y.innerHTML = position.coords.latitude
+              z.innerHTML = position.coords.longitude
             //   w.type  = "submit"
-                console.log(position.coords.latitude,position.coords.longitude)
-
-            }
-            </script>
+                console.log(position.coords.latitude,position.coords.longitude);
+                 alert(position.coords.latitude,position.coords.longitude);
+    $.ajax({
+    type: "GET",
+    url: "http://127.0.0.1:8000/sharemylocation/",
+    data: {
+        "latitude": position.coords.latitude,
+        "longitude":position.coords.longitude
+    },
+    success: function(data){
+        console.log("success");
+        console.log(data);
+    },
+    failure: function(data){
+        console.log("failure");
+        console.log(data);
+    },
+  });
+}
+ </script>
 
 </html>

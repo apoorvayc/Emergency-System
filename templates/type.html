@@ -29,6 +29,25 @@
             }
         </script>
 <div class="container">
+  {% if message != '' %}
+  <div class="alert" style="padding: 20px;
+	background-color: #b224ef; /* Red */
+	color: white;
+  margin-bottom: 15px;">
+  {{message}}
+    <span class="closebtn" style="margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;"
+    onMouseOver="this.style.color='black';"
+     onclick="this.parentElement.style.display='none';">&times;</span>
+    
+  </div>
+  {% endif %}
     <div class="row" style="padding-bottom: 100px">
         <h1 style="text-align: center; color: #b224ef;text-shadow: 1px 1px #9152f8">Describe the situation in any one of the following formats</h1>
     </div>
@@ -172,6 +191,8 @@
           }
           </style>
           <body>
+           
+          
             <form method="POST" style="color: #9152f8;font-style: " action="{% url 'text2' %}">
                 <div style="background-color: white;height: 64%;">
                   {% csrf_token %}
@@ -245,6 +266,7 @@
             </form>
           </body>
           <script>
+            
       function myFunction() {
         var x  = document.getElementById('fireaccident')
         var y  = document.getElementById('breathlessness')
