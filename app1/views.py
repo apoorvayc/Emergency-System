@@ -372,6 +372,7 @@ def audio(request):
     # # f = "HI"
     # # print(str(f))
 
+
     # return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
 
 
