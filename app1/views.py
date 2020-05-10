@@ -18,11 +18,12 @@ import tensorflow
 import random
 import json
 import speech_recognition as sr
-
+from datetime import date,datetime
 r = sr.Recognizer()
 import pyrebase
 from django.core.mail import send_mail
 import pickle
+from json import dumps
 x,y = 0,0
 
 
@@ -53,7 +54,7 @@ except:
 
     words = [stemmer.stem(w.lower()) for w in words if w != "?"]
     words = sorted(list(set(words)))
-    print(words)
+    #print(words)
     labels = sorted(labels)
 
 
@@ -154,37 +155,50 @@ def signIn(request):
         request.session['email'] = None
     # print(request.session['uid'])
     if request.session['uid'] != None:
-
+        
         currentuserrid = request.session['email']
         print("Email ", currentuserrid)
         users = db.child('users').get().val()
         print(users)
         list2 = []
+        #print("ffffffffffffffffffffffff")
         for i in users:
             if currentuserrid == str(db.child('users').child(i).child('email').get().val()):
                 pincode = db.child('users').child(i).child('pincode').get().val()
-                print("Pincode")
+                #print("Pincode")
+                #print(pincode)
                 feeds = database.child('Feeds').get().val()
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-                print(feeds)
+                #print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+                #print(feeds)
                 if feeds:
                     for i in feeds:
-                        print(i)
-                        print(str(database.child('Feeds').child(i).child('pincode').get().val()))
-                        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-                        if str(database.child('Feeds').child(i).child('pincode').get().val()) == str(400058) :
-                            print("jjjjjjj")
+                        #print(i)
+                        dbpincode =int(str(database.child('Feeds').child(i).child('pincode').get().val()))
+                        #print(int(str(pincode)))
+                        #print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+                        datestr=database.child('Feeds').child(i).child('Date').get().val()
+                        #print(datestr)
+                        todaydate=dumps(date.today(),default=myconverter)
+                        #print(todaydate)
+                        if abs(dbpincode-int(pincode))<3 and datestr==todaydate :
+                            #print("jjjjjjj")
                             id = database.child('Feeds').child(i).child('VictimId').get().val()
-                            print("WWWWWWWWWWWWWWWWWWWWWWWW")
-                            print(id)
+                            #print("WWWWWWWWWWWWWWWWWWWWWWWW")
+                            #print(id)
                             #print(database.child('users').child(id).child('name').get().val())
-                            print("4444444")
+                            #print("4444444")
+                            #print("#"*32)
+                            
+                            datestr=datestr[1:-1]
+                            #print("5"*77)
+                            #print(datestr)
                             list2.append({
                                 "VictimName": database.child('users').child(id).child('name').get().val(),
                                 "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
-                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
+                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val(),
+                                "Date ": str(datestr)
                             })
-                    print(list2)
+                    #print(list2)
                     break
 
         return render(request, "welcome.html", {"e": request.session['email'], 'feeds': list2})
@@ -202,8 +216,8 @@ def postsign(request):
         request.session['email'] = request.POST.get('email')
         email = request.POST.get('email')
         passw = request.POST.get("pass1")
-        print(email)
-        print(passw)
+        #print(email)
+        #print(passw)
         try:
             user = authe.sign_in_with_email_and_password(email, passw)
             session_id = user['idToken']
@@ -214,36 +228,42 @@ def postsign(request):
             message = "Please check your emailID / Password"
             return render(request, "signIn.html", {"msg": message})
     else:
-        print("****************************************")
+        #print("****************************************")
         currentuserrid = request.session['email']
-        print("Email ", currentuserrid)
+        #print("Email ", currentuserrid)
         users = db.child('users').get().val()
-        print(users)
+        #print(users)
         list2 = []
         for i in users:
 
             if currentuserrid == str(db.child('users').child(i).child('email').get().val()):
                 pincode = db.child('users').child(i).child('pincode').get().val()
-                print("Pincode", pincode)
+                #print("Pincode", pincode)
                 feeds = database.child('Feeds').get().val()
-                print(feeds)
-                print("rrrrrrrrrrrrrrrrr")
+                #print(feeds)
+                #print("rrrrrrrrrrrrrrrrr")
                 if feeds:
                     for i in feeds:
                         if str(database.child('Feeds').child(i).child('pincode').get().val()) == pincode:
                             id = database.child('Feeds').child(i).child('VictimId').get().val()
+                            #print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
+                            datestr=database.child('Feeds').child(i).child('Date').get().val()
+                            datestr=datestr[1:-1]
+                            #print(datestr)
                             list2.append({
                                 "VictimName": database.child('users').child(id).child('name').get().val(),
                                 "HospitalCalled": database.child('Feeds').child(i).child('HospitalCalled').get().val(),
-                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val()
+                                "Pincode": database.child('Feeds').child(i).child('pincode').get().val(),
+                                "Date": str(datestr)
                             })
-                    print(list2)
+                    #print("ddddddddddddddddddd")
+                    #print(list2)
         return render(request, "welcome.html", {"e": request.session['email'], 'feeds': list2})
 
 
 def logout(request):
     if "uid" in request.session.keys():
-        print(request.session['uid'])
+        #print(request.session['uid'])
         if request.session['uid'] != None:
             request.session['uid'] = None
             request.session['email'] = None
@@ -274,13 +294,13 @@ def postsignup(request):
     passw = request.POST.get('password')
     language = request.POST.get('language')
     address = request.POST.get('address')
-    print(name)
-    print(email)
-    print(passw)
+    #print(name)
+    #print(email)
+    #print(passw)
     try:
         user = authe.create_user_with_email_and_password(email, passw)
-        print("123")
-        print(user)
+        #print("123")
+        #print(user)
         uid = user['localId']
         data = {"name": name, "email": email, "bloodgrp": bloodgrp,
                 "mobileno": mobileno,
@@ -290,8 +310,9 @@ def postsignup(request):
                 "emegencycontactno": emergencycontactno,
                 "emergencyemail": emergencyemail,
                 "address": address,
+                "pincode":pincode
                 }
-        print("456")
+        #print("456")
         database.child("users/" + uid).set(data)
     except:
         message = "Invalid Credentials"
@@ -309,7 +330,7 @@ def first_aid(request,input):
         if tg['tag'] == tag:
             responses = tg['responses']
 
-    print(responses)
+    #print(responses)
     db = firebase.database()
     userss = db.child("users").get().val()
     usermail = request.session['email']
@@ -354,8 +375,8 @@ def audio(request):
         f = wordzz.translate(from_lang=lang, to='en-IN')
     else:
         f = wordzz
-    print("************************************")
-    print(str(f))
+    #print("************************************")
+    #print(str(f))
     inp = str(f)
     return first_aid(request,inp)
     # results = model.predict([bag_of_words(inp, words)])
@@ -391,44 +412,16 @@ def text2(request):
         # def radio(request):
         #if request.method == "POST":
         val = request.POST["radiobutton"]
-        print(val)
+        #print(val)
         val2 = request.POST["radiobutton2"]
-        print(val2)
+        #print(val2)
         if val2 == "Fire":
             l = val2
         else:
             # l = val +" "+ val2
             l= val2
-        print(l)
+        #print(l)
         return first_aid(request,l)
-        ###################################################### SAME for text1  and text2
-        # results = model.predict([bag_of_words(l, words)])
-        # results_index = numpy.argmax(results)
-        # tag = labels[results_index]
-
-        # for tg in data["intents"]:
-        #     if tg['tag'] == tag:
-        #         responses = tg['responses']
-        # db = firebase.database()
-        # userss = db.child("users").get().val()
-        # usermail = request.session['email']
-        # lang = ""
-        # for i in userss:
-        #     mail = db.child("users").child(i).child("email").get().val()
-        #     if mail == usermail:
-        #         lang = db.child("users").child(i).child("language").get().val()
-        #         print(lang)
-        #         break
-
-        # word = TextBlob(responses[0])
-        # # print(word)
-        # f = word.translate(from_lang='en-IN', to=lang)
-        # f = (str(f))
-        # # f = "HI"
-        
-        # return render(request, 'home.html', {"text": responses[0], "textlang": str(f)})
-
-
 
 # useremail = request.session['email']
 #                     users = db.child('users').get().val()
@@ -445,49 +438,53 @@ def text2(request):
 
 import reverse_geocoder as rg
 def notify_emergencycontact(request) :
-    print("Hello from latlongi")
+    #print("Hello from latlongi")
     latitude = request.POST['latitude']
     longitude = request.POST['longitude']
     coordinates = (latitude,longitude)
     if request.method == "POST":
         currentuserrid = request.session['email']
-        print(currentuserrid)
+        #print(currentuserrid)
         databaseuser = db.child('users').get().val()
         for l in databaseuser:
             if str(db.child('users').child(l).child('email').get().val()) == currentuserrid:
                 emergencyemail = db.child('users').child(l).child('emergencyemail').get().val()
                 nameofuser = db.child('users').child(l).child('name').get().val()
-                print (rg.search(coordinates))
+                #print (rg.search(coordinates))
                 result = rg.search(coordinates)
                 t = ""
                 addr = result[0]
                 for add in addr.items() :
                     t += str(add[1]) + " "
                 Address = str(db.child('users').child(l).child('name').get().val()) + " is not feeling comfortable at location :" + t + " Please look after them"
-                print(Address)
+                #print(Address)
                 email_from = settings.EMAIL_HOST_USER
                 subject = str(db.child('users').child(l).child('name').get().val()) + " is in an Emergency!!!"
                 recipient_list = []
                 recipient_list.append(emergencyemail)
                 send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
-                print("Message Sent")
+                #print("Message Sent")
                 break
     return render(request,'welcome.html',{"e": request.session['email']})
+
+def myconverter(o):
+    if isinstance(o, (date)):
+        return o.__str__()
+    
 @csrf_exempt
-def latlongi(request):
-    print("Hello from latlongi")
-    print(request.method)
+def mylocation(request):
+    #print("Hello from latlongi")
+    #print(request.method)
        
     if request.method == "GET":
-        print(request)
-        print("555555555555555555555555555555555")
+        #print(request)
+        #print("555555555555555555555555555555555")
 
-        latitude = request.GET.get('latitude')
-        longitude = request.GET.get('longitude')
-        print("ddddddddddddddddddddddddddd")
-        print(latitude)
-        print(longitude)
-        print("Hello from latlongi", latitude, longitude)
+        request.session['latitude'] = request.GET.get('latitude')
+        request.session['longitude'] = request.GET.get('longitude')
+        #print("ddddddddddddddddddddddddddd")
+        #print(request.session['latitude'])
+        #print(request.session['longitude'])
         # CODE TO BE ADDED
         # from geopy.geocoders import GoogleV3
 
@@ -500,11 +497,43 @@ def latlongi(request):
         #     print( " sdfghgf", locations[0].address)
         #     print(locations[0].address[i - 6:i])
         #     pincode = str(locations[0].address[i - 6:i])
+        pincode='400058'
+        request.session['pincode']=pincode
+    return HttpResponse("Location known")
+    #Temporory lets consider pincode to be
+        
+    
+@csrf_exempt
+def latlongi(request):
+    #print("Hello from latlongi")
+    #print(request.method)
+       
+    if request.method == "GET":
+        #print(request)
+        #print("555555555555555555555555555555555")
 
+        latitude = request.GET.get('latitude')
+        longitude = request.GET.get('longitude')
+        #print("ddddddddddddddddddddddddddd")
+        #print(latitude)
+        #print(longitude)
+        #print("Hello from latlongi", latitude, longitude)
+        # CODE TO BE ADDED
+        # from geopy.geocoders import GoogleV3
+
+        # geolocator = GoogleV3(api_key='')
+        # latlong = latitude + ',' + longitude
+        # locations = geolocator.reverse(latlong)
+        # if locations:
+
+        #     i = locations[0].address.rfind(',')
+        #     print( " sdfghgf", locations[0].address)
+        #     print(locations[0].address[i - 6:i])
+        #     pincode = str(locations[0].address[i - 6:i])
+        
 
         #Temporory lets consider pincode to be
         pincode='400058'
-
         currentuserrid = request.session['email']
 
 
@@ -515,14 +544,14 @@ def latlongi(request):
         k = 0
         databaseuser = db.child('users').get().val()
         for i in data:
-            print(i)
+            #print(i)
             hospitalname=i
             hospital = str(db.child('Pincode').child(pincode).child(i).child('type').get().val()).split(',')
-            print(hospital)
+            #print(hospital)
             for j in hospital:
-                print("From j", j)
+                #print("From j", j)
                 if j == hospitaltype:
-                    print("Hospital Mil-Gaya")
+                    #print("Hospital Mil-Gaya")
                     k = 1
 
                     for l in databaseuser:
@@ -532,17 +561,17 @@ def latlongi(request):
                             emargencyemail = db.child('users').child(l).child('emergencyemail').get().val()
 
                             CurrentAddress = "Rahul Soni 123."
-                            print(l)
+                            #print(l)
                             Address = str(db.child('users').child(l).child(
                                 'name').get().val()) + " is not feeling comfortable. Please look after him ASAP."
-                            print(Address)
+                            #print(Address)
                             email_from = settings.EMAIL_HOST_USER
                             subject = "Emergency Found"
                             recipient_list = []
                             recipient_list.append(hospitalemail)
                             recipient_list.append(emargencyemail)
                             #send_mail(subject, Address, email_from, recipient_list, fail_silently=False)
-                            print("Message Sent")
+                            #print("Message Sent")
                             break
 
                     # send email to hospital
@@ -558,15 +587,15 @@ def latlongi(request):
                     userid=j
                     if db.child('users').child(j).child('email').get().val() == currentuserrid:
                         print(i)
-                        print("Hospital Nahi mila ")
-                        print(db.child('Pincode').child(pincode).child(i).child('email').get().val())
-                        print(db.child('Pincode').child(pincode).child(i).child('contactno').get().val())
+                        #print("Hospital Nahi mila ")
+                        #print(db.child('Pincode').child(pincode).child(i).child('email').get().val())
+                        #print(db.child('Pincode').child(pincode).child(i).child('contactno').get().val())
                         hospitalemail = str(db.child('Pincode').child(pincode).child(i).child('email').get().val())
                         emargencyemail = db.child('users').child(j).child('emergencyemail').get().val()
-                        print("Hospital Email ", hospitalemail)
-                        print("Emergency Email ",emargencyemail)
+                        #print("Hospital Email ", hospitalemail)
+                        #print("Emergency Email ",emargencyemail)
                         CurrentAddress = "Rahul Soni 123."
-                        print(db.child('users').child(j).child('name').get().val())
+                        #print(db.child('users').child(j).child('name').get().val())
                         Address = db.child('users').child(j).child('name').get().val() +  "is not feeling comfortable. Please look after him ASAP."
 
                         email_from = settings.EMAIL_HOST_USER
@@ -581,11 +610,15 @@ def latlongi(request):
                 break
 
         #users = db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2')
-
+        todaydate=dumps(date.today(),default=myconverter)
+        #print(todaydate)
         feeddata = {
                 "VictimId":userid,
                 "pincode":pincode,
-                "HospitalCalled":hospitalname
+                "HospitalCalled":hospitalname,
+                "Date":todaydate,
+                "Latitude":latitude,
+                "Longitude":longitude
         }
 
         p = db.child('Feeds').push(feeddata)
@@ -594,52 +627,47 @@ def latlongi(request):
         # print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
         # print(db.child('users').child('7g6ZdpFJDIbUwBk2S7NbkaPDh9o2').child('emergencycontactname').get().val())
 
-        print("Message Sent To ")
-    else:
-        print("nnnnnnnnnnnnnnnnnnnnnnnnpooooooooooooooooooo")
+        #print("Message Sent To ")
     return HttpResponse("DOne")
 
 
-def get_latlong(request):
-    bin = db.child("Bin").get().val()
-    lat, lon, cap = [], [], []
-    cap_70, cap_20, cap_20_70 = [], [], []
-    print(bin)
+# def get_latlong(request):
+#     bin = db.child("Bin").get().val()
+#     lat, lon, cap = [], [], []
+#     cap_70, cap_20, cap_20_70 = [], [], []
+#     print(bin)
     
-    for i in bin:
-        height = (int(db.child("Bin").child(i).child("height").get().val()))
-        lati = (float(db.child("Bin").child(i).child("latitude").get().val()))
-        long = (float(db.child("Bin").child(i).child("longitude").get().val()))
+#     for i in bin:
+#         height = (int(db.child("Bin").child(i).child("height").get().val()))
+#         lati = (float(db.child("Bin").child(i).child("latitude").get().val()))
+#         long = (float(db.child("Bin").child(i).child("longitude").get().val()))
 
-        var = db.child("BinPerLevel").child('19-312251|72-8513579').child("2020-01-12").get().val()
-        print(next(reversed(var)))
-        height2 = db.child("BinPerLevel").child('19-312251|72-8513579').child("2020-01-12").child(
-            next(reversed(var))).child(
-            "height").get().val()
+#         var = db.child("BinPerLevel").child('19-312251|72-8513579').child("2020-01-12").get().val()
+#         print(next(reversed(var)))
+#         height2 = db.child("BinPerLevel").child('19-312251|72-8513579').child("2020-01-12").child(
+#             next(reversed(var))).child(
+#             "height").get().val()
 
-        # for i in var :
-        #     print(i)
-        # from datetime import date, datetime
-        # today = date.today()
-        # now = datetime.now()
-        # dt_string = now.strftime("%H:%M")
-        # height2 = (int(db.child("BinPerLevel").child(data).child("height").get().val()))
-        perc = (int(height2) /int(height)) * 100
-        if perc >= 70:
-            cap_70.append([lati, long])
-        elif perc <= 20:
-            cap_20.append([lati, long])
-        else:
-            cap_20_70.append([lati, long])
-    cap_20 = json.dumps(cap_20)
-    cap_20_70 = json.dumps(cap_20_70)
-    cap_70 = json.dumps(cap_70)
-    print(cap_20,cap_20_70,cap_70)
-    return render(request,'latlong.html')
-#    return render(request,'latlong.html',{"cap_20":cap_20,"cap_70":cap_70,"cap_20_70":cap_20_70})
+#         # for i in var :
+#         #     print(i)
+#         # from datetime import date, datetime
+#         # today = date.today()
+#         # now = datetime.now()
+#         # dt_string = now.strftime("%H:%M")
+#         # height2 = (int(db.child("BinPerLevel").child(data).child("height").get().val()))
+#         perc = (int(height2) /int(height)) * 100
+#         if perc >= 70:
+#             cap_70.append([lati, long])
+#         elif perc <= 20:
+#             cap_20.append([lati, long])
+#         else:
+#             cap_20_70.append([lati, long])
+#     cap_20 = json.dumps(cap_20)
+#     cap_20_70 = json.dumps(cap_20_70)
+#     cap_70 = json.dumps(cap_70)
+#     print(cap_20,cap_20_70,cap_70)
+#     return render(request,'latlong.html')
+# #    return render(request,'latlong.html',{"cap_20":cap_20,"cap_70":cap_70,"cap_20_70":cap_20_70})
 def type(request):
 
     return render(request, "type.html",{"message":''})
-"""
-
-"""

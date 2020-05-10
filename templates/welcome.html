@@ -1,11 +1,53 @@
 {% load static %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css'%}">
 <!DOCTYPE html>
-
-<div class="container" style="">
+<script>
+    var x = document.getElementById("demo");
+    var y  =document.getElementById("latitude");
+    var z  = document.getElementById("longitude");
+    console.log("finally");
+  
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+      console.log("finally done");
+      } else {
+          console.log("finally not done");
+      x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+  
+  
+  
+    function showPosition(position){
+      
+      x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+                y.innerHTML = position.coords.latitude
+                z.innerHTML = position.coords.longitude
+              //   w.type  = "submit"
+                  console.log(position.coords.latitude,position.coords.longitude);
+                   alert(position.coords.latitude,position.coords.longitude);
+      $.ajax({
+      type: "GET",
+      url: "http://127.0.0.1:8000/savemylocation",
+      data: {
+          "latitude": position.coords.latitude,
+          "longitude":position.coords.longitude
+      },
+      success: function(data){
+          console.log("success");
+          console.log(data);
+      },
+      failure: function(data){
+          console.log("failure");
+          console.log(data);
+      },
+    });
+  }
+   </script>
+<div class="container>
     <!-- Top Navigation -->
     <div class="row">
         <div class="col-md-6">
@@ -41,13 +83,29 @@
     </div>
 
 
+    <div>
+        <p id="demo"></p>
+        <p id="latitude"></p>
+        <p id="longitude"></p>
+        </div>
+       
+
     {% for i in feeds %}
     <div class="row">
-    <div class="alert alert-success alert-dismissible">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>{{ i.VictimName }}</strong> is not feeling well at Andheri East
+    <div class="alert alert-success alert-dismissible" style="color:white;background-color: #FF6060;">
+        <a class="closebtn" style="margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;"
+        onMouseOver="this.style.color='black';"
+         onclick="this.parentElement.style.display='none';">&times;</a>
+        <strong>{{ i.VictimName }}</strong> is not feeling well at  <strong>{{ i.Pincode }}</strong> 
         And is hospitalized to <strong>{{ i.HospitalCalled }}</strong>
-        <strong>{{ i.Pincode }}</strong> 
+       
       </div>
     </div>
     {% endfor %}
